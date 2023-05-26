@@ -6,10 +6,12 @@ import Experience from "./components/Experience";
 function App() {
   const [count, setCount] = useState(0);
 
+
   return (
     <>
       <div className="relative z-0 bg-primary">
-        <Experience />
+        <Experience  />
+        
       </div>
     </>
   );

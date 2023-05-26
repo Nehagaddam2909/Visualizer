@@ -4,7 +4,7 @@ import {
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import { motion } from "framer-motion";
-
+import axios from "axios";
 import "react-vertical-timeline-component/style.min.css";
 
 import { styles } from "../styles";
@@ -54,7 +54,23 @@ const ExperienceCard = ({ experience }) => {
 };
 
 const Experience = () => {
-  const [State, setstate] = useState("Maharashtra")
+  const [State, setstate] = useState("Maharashtra");
+  const [prediction, setprediction] = useState(0)
+  const handle = async (state) => {
+    axios.post("http://localhost:8000/", { state }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then((res) => {
+      console.log("result:", res.data["Predicted Cases of Kerala"]);
+      setprediction(Math.ceil(res.data["Predicted Cases of Kerala"]));
+    }
+    ).catch((err) => {
+      console.log(err);
+    }
+    )
+
+  }
   useEffect(() => {
     // replace % with space
     let path = window.location.pathname.split("/")[1].replace(/%20/g, " ");
@@ -63,8 +79,10 @@ const Experience = () => {
     if (experiences[path] === undefined) {
       window.location.href = "/Maharashtra"
     }
+    // call handle 
+    handle(path);
   }, [window.location.pathname])
-
+  // console.log(State)
   return (
     <>
       <center>
@@ -84,6 +102,9 @@ const Experience = () => {
           ))}
         </VerticalTimeline>
       </div>
+      <button style={{ color: 'white ', padding: "1rem 1rem", marginLeft: "42.7vw" }} onClick={e => alert(`Prediction ${prediction}`)}>
+        Predict cases upto 31 days
+      </button>
     </>
   );
 };

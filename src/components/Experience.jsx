@@ -56,9 +56,11 @@ const ExperienceCard = ({ experience }) => {
 const Experience = () => {
   const [State, setstate] = useState("Maharashtra")
   useEffect(() => {
-    setstate(window.location.pathname.split("/")[1]);
+    // replace % with space
+    let path = window.location.pathname.split("/")[1].replace(/%20/g, " ");
+    setstate(path);
     // console.log(window.location.pathname.split("/")[1])
-    if (experiences[window.location.pathname.split("/")[1]] === undefined) {
+    if (experiences[path] === undefined) {
       window.location.href = "/Maharashtra"
     }
   }, [window.location.pathname])
@@ -68,7 +70,7 @@ const Experience = () => {
       <center>
         <motion.div variants={textVariant()}>
           <h2 className={`${styles.sectionHeadText} text-center`}>
-            Maharashtra, India
+            {State}, India
           </h2>
         </motion.div>
       </center>

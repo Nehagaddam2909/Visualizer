@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
@@ -13,6 +13,7 @@ import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
 
 const ExperienceCard = ({ experience }) => {
+
   return (
     <VerticalTimelineElement
       contentStyle={{
@@ -24,7 +25,7 @@ const ExperienceCard = ({ experience }) => {
       iconStyle={{ background: experience.iconBg }}
       icon={
         <div className='flex justify-center items-center w-full h-full'>
-         
+
         </div>
       }
     >
@@ -53,18 +54,27 @@ const ExperienceCard = ({ experience }) => {
 };
 
 const Experience = () => {
+  const [State, setstate] = useState("Maharashtra")
+  useEffect(() => {
+    setstate(window.location.pathname.split("/")[1]);
+    // console.log(window.location.pathname.split("/")[1])
+    if (experiences[window.location.pathname.split("/")[1]] === undefined) {
+      window.location.href = "/Maharashtra"
+    }
+  }, [window.location.pathname])
+
   return (
     <>
-    <center>
-      <motion.div variants={textVariant()}>
-        <h2 className={`${styles.sectionHeadText} text-center`}>
-        Maharashtra, India
-        </h2>
-      </motion.div>
+      <center>
+        <motion.div variants={textVariant()}>
+          <h2 className={`${styles.sectionHeadText} text-center`}>
+            Maharashtra, India
+          </h2>
+        </motion.div>
       </center>
       <div className='mt-20 flex flex-col'>
         <VerticalTimeline>
-          {experiences.map((experience, index) => (
+          {experiences[State].map((experience, index) => (
             <ExperienceCard
               key={`experience-${index}`}
               experience={experience}
